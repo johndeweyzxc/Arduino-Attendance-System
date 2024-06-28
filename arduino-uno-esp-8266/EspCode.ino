@@ -57,7 +57,6 @@ void connectToWiFi()
   Serial.println(WiFi.localIP());
 }
 
-// Dito ipapasa ung UID tag code galing sa NFC card, example: sendUIDToServer("E3 C0 EB 28")
 void sendUIDToServer(String uidTag)
 {
   connectToServer();

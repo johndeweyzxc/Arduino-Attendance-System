@@ -31,5 +31,20 @@ export interface UniqueStudentAttendanceData extends UniqueStudentData {
 
 // Use as individual row student data
 export interface UniqueRowStudentData extends StudentData {
+  // id is the document id from the database
   id: string;
+}
+
+// Use as individual row for new attendance data
+export interface UniqueRowAttendanceData {
+  // id is the document id from the database
+  id: string;
+  TimeInStr: string;
+}
+
+export interface CurrentSections {
+  ABM: string[];
+  HUMSS: string[];
+  STEM: string[];
+  TVL: string[];
 }

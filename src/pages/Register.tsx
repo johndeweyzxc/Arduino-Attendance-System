@@ -15,8 +15,8 @@ import PublishIcon from "@mui/icons-material/Publish";
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { StudentData } from "../models/Models";
 import { Timestamp } from "firebase/firestore";
-import StudentDB from "../data/StudentDB";
 import CloseIcon from "@mui/icons-material/Close";
+import StudentCol from "../data/StudentCol";
 
 function RegisterHeader() {
   return (
@@ -71,6 +71,17 @@ function OnSubmitUpload(
     return true;
   };
 
+  if (studentData.StudentName.length > 75) {
+    errorIndicator.StudentName =
+      "Student name cannot exceed more than 75 characters";
+    setInputErrorIndicator(errorIndicator);
+    return;
+  } else if (studentData.Section.length > 50) {
+    errorIndicator.Section = "Section cannot exceed more than 50 characters";
+    setInputErrorIndicator(errorIndicator);
+    return;
+  }
+
   if (studentData.StudentName.length === 0) {
     errorIndicator.StudentName = "Student name cannot be empty";
     setInputErrorIndicator(errorIndicator);
@@ -105,8 +116,7 @@ function OnSubmitUpload(
         handleOpenAlert("success", message);
       }
     };
-
-    StudentDB.UploadStudent(studentData, OnFinishedUploading);
+    StudentCol.UploadStudent(studentData, OnFinishedUploading);
   }
 }
 

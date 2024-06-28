@@ -15,7 +15,6 @@ import {
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { DataGrid, GridColDef, GridEventListener } from "@mui/x-data-grid";
-import StudentDB from "../data/StudentDB";
 import {
   StudentData,
   UniqueRowStudentData,
@@ -23,6 +22,7 @@ import {
 } from "../models/Models";
 import { Timestamp } from "firebase/firestore";
 import Notification from "../components/Notification";
+import StudentCol from "../data/StudentCol";
 
 function StudentHeader() {
   return (
@@ -40,7 +40,6 @@ function StudentHeader() {
             <ArrowBackIcon />
           </IconButton>
         </Tooltip>
-        <Typography variant="h6">Student</Typography>
       </Box>
     </AppBar>
   );
@@ -112,7 +111,7 @@ function OnSubmitUpdate(
       handleCloseAlert();
     };
 
-    StudentDB.UpdateStudent(data, data.id, OnUpdatedStudent);
+    StudentCol.UpdateStudent(data.id, data, OnUpdatedStudent);
   }
 }
 
@@ -125,8 +124,8 @@ function OnDeleteStudent(
     ...(studentData as UniqueRowStudentData),
   };
 
-  const OnDeletedStudent = (isSuccess: boolean) => {
-    if (isSuccess) {
+  const OnDeletedStudent = (success: boolean) => {
+    if (success) {
       handleOpenAlert("success", "Successfully deleted student");
     } else {
       handleOpenAlert("error", "Failed to delete student");
@@ -134,7 +133,7 @@ function OnDeleteStudent(
     handleCloseAlert();
   };
 
-  StudentDB.DeleteStudent(data.id, OnDeletedStudent);
+  StudentCol.DelStudent(data.id, OnDeletedStudent);
 }
 
 interface InputErrorIndicator {
@@ -346,7 +345,7 @@ function StudentTable(props: StudentTableProps) {
 
       setStudents(students);
     };
-    const unsubscribe = StudentDB.ListenStudent(onReceivedStudent);
+    const unsubscribe = StudentCol.ListenStudentAll(onReceivedStudent);
 
     return () => {
       // Cleanup listener when the component unmounts
